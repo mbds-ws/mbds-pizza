@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByPhoneAndPassword(String phone, String password);
+    Optional<User> findByPhone(String phone);
     boolean existsByPhone(String phone);
 
 }
