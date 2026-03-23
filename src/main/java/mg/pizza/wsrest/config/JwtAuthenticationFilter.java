@@ -42,20 +42,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
 
             if (!jwtService.isValid(token)) {
-                System.out.println("JWT invalide: " + token);
+                System.out.println("Invalid JWT: " + token);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("JWT invalide");
+                response.getWriter().write("Invalid JWT");
                 return;
             } 
 
             // AUTHENTIFICATION SPRING SECURITY
-            String email = jwtService.extractEmail(token);
+            String phone = jwtService.extractPhone(token);
             String role = jwtService.extractRole(token);
             String authority = (role != null && !role.isBlank()) ? "ROLE_" + role : "ROLE_USER";
 
             UsernamePasswordAuthenticationToken auth = 
                 new UsernamePasswordAuthenticationToken(
-                    email, 
+                    phone, 
                     null, 
                     List.of(new SimpleGrantedAuthority(authority))
                 );

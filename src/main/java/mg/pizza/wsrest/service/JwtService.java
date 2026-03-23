@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import mg.pizza.wsrest.model.Role;
 
 @Service
 public class JwtService {
@@ -19,12 +20,14 @@ public class JwtService {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    public String generateToken(String email, String role) {
+    public String generateToken(String phone, Role role) {
+        String roleValue = role != null ? role.name() : "CUSTOMER";
+
         return Jwts.builder()
-                .subject(email)
+                .subject(phone)
                 .claims(Map.of(
-                        "email", email,
-                        "role", role))
+                        "phone", phone,
+                "role", roleValue))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getKey())
@@ -39,10 +42,10 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String extractEmail(String token) {
+    public String extractPhone(String token) {
         Claims claims = extractAllClaims(token);
-        String email = claims.get("email", String.class);
-        return email != null ? email : claims.getSubject();
+        String phone = claims.get("phone", String.class);
+        return phone != null ? phone : claims.getSubject();
     }
 
     public String extractRole(String token) {
