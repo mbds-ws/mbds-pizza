@@ -1,0 +1,2 @@
+INSERT INTO users (fullname,password,role, phone) VALUES ('Admin User','1234','ADMIN', '+261000000000'); 
+INSERT INTO users (fullname,password,role, phone) VALUES ('Regular User','abcd','CUSTOMER', '+261111111111'); 
