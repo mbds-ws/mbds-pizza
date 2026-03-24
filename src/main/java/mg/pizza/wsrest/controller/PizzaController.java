@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mg.pizza.wsrest.dto.PizzaRequestDTO;
@@ -25,6 +27,7 @@ import mg.pizza.wsrest.service.PizzaService;
 public class PizzaController {
     private final PizzaService pizzaService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PizzaResponseDTO> createPizza(@Valid @RequestBody PizzaRequestDTO requestDto) {
         return new ResponseEntity<>(pizzaService.createPizza(requestDto), HttpStatus.CREATED);
@@ -40,6 +43,7 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaService.getPizzaById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PizzaResponseDTO> updatePizza(
             @PathVariable Long id,
@@ -48,6 +52,7 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaService.updatePizza(id, requestDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePizza(@PathVariable Long id) {
         pizzaService.deletePizza(id);
