@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pizzas"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Postman Special",
+      "description": "Pizza created from Postman CRUD tests",
+      "price": 25000,
+      "available": true,
+      "categoryId": {{categoryId}},
+      "ingredientIds": [{{ingredientId}}]
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Pizza created', function () {
+        pm.response.to.have.status(201);
+      });
+
+      var response = pm.response.json();
+      pm.environment.set('pizzaId', response.id);
+    language: text/javascript
+order: 1000

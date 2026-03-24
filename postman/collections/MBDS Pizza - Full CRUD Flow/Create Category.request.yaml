@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/categories"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Runner Category",
+      "description": "Category created by the full Postman flow"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Category created', function () {
+        pm.response.to.have.status(201);
+      });
+
+      var response = pm.response.json();
+      pm.environment.set('categoryId', response.id);
+    language: text/javascript
+order: 2000

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pizzas/{{pizzaId}}"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Pizza deleted', function () {
+        pm.response.to.have.status(204);
+      });
+
+      pm.environment.unset('pizzaId');
+    language: text/javascript
+order: 11000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/categories/{{categoryId}}"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Category deleted', function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.environment.unset('categoryId');
+      pm.environment.unset('token');
+    language: text/javascript
+order: 13000

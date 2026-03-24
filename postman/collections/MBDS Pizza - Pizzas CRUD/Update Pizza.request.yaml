@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pizzas/{{pizzaId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Postman Special Updated",
+      "description": "Updated from Postman CRUD tests",
+      "price": 27000,
+      "available": true,
+      "categoryId": {{categoryId}},
+      "ingredientIds": [{{ingredientId}}]
+    }
+order: 4000

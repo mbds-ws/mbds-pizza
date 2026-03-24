@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/ingredients/{{ingredientId}}"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Ingredient deleted', function () {
+        pm.response.to.have.status(204);
+      });
+
+      pm.environment.unset('ingredientId');
+    language: text/javascript
+order: 5000

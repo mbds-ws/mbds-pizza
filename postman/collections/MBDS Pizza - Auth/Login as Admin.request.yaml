@@ -1,0 +1,28 @@
+$kind: http-request
+description: Authenticates with the seeded admin user and stores the JWT in the environment.
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "phone": "{{adminPhone}}",
+      "password": "{{adminPassword}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Login succeeded', function () {
+        pm.response.to.have.status(200);
+      });
+
+      var response = pm.response.json();
+      pm.test('JWT token returned', function () {
+        pm.expect(response.token).to.be.a('string').and.not.empty;
+      });
+
+      pm.environment.set('token', response.token);
+    language: text/javascript
+order: 1000

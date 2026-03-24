@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/ingredients/{{ingredientId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Postman Mozzarella Updated"
+    }
+order: 4000

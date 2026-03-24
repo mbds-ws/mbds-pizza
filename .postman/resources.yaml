@@ -1,0 +1,18 @@
+# Use this workspace to collaborate
+workspace:
+  id: 0f0dd7d8-7a8e-4026-8410-6e6f1d4044bb
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+cloudResources:
+  collections:
+    ../postman/collections/MBDS Pizza - Auth: c5f6976e-31aa-439e-9cf4-90003a13cf97
+    ../postman/collections/MBDS Pizza - Categories CRUD: 7d9beed5-867b-4cfa-b897-21be2402ad2e
+    ../postman/collections/MBDS Pizza - Ingredients CRUD: e06e8018-34af-41cc-ad7b-b239f535c7cb
+    ../postman/collections/MBDS Pizza - Pizzas CRUD: 9bf099fd-5910-40e1-87ca-70d1a6c6e456
+    ../postman/collections/MBDS Pizza - Full CRUD Flow: 3b31fdf7-a0e3-452f-a72e-11051da5e50c
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

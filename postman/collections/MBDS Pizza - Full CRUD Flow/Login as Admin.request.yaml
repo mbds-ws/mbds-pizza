@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "phone": "{{adminPhone}}",
+      "password": "{{adminPassword}}"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Login succeeded', function () {
+        pm.response.to.have.status(200);
+      });
+
+      var response = pm.response.json();
+      pm.environment.set('token', response.token);
+    language: text/javascript
+order: 1000
