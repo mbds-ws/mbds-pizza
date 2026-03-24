@@ -1,9 +1,10 @@
-package mg.pizza.wsrest.controller;
+ package mg.pizza.wsrest.controller;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<IngredientResponseDTO> createIngredient(@Valid @RequestBody IngredientRequestDTO requestDto) {
         return new ResponseEntity<>(ingredientService.createIngredient(requestDto), HttpStatus.CREATED);
@@ -34,6 +36,7 @@ public class IngredientController {
         return ResponseEntity.ok(ingredientService.getIngredientById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<IngredientResponseDTO> updateIngredient(
             @PathVariable Long id,
@@ -42,6 +45,7 @@ public class IngredientController {
         return ResponseEntity.ok(ingredientService.updateIngredient(id, requestDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
         ingredientService.deleteIngredient(id);
