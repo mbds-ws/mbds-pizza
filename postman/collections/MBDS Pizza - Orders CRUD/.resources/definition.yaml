@@ -1,0 +1,9 @@
+$kind: collection
+description: CRUD-like requests for orders. Run the auth collection first so
+  {{token}} is available, and ensure {{pizzaId}} points to an available pizza.
+auth:
+  - id: 60dca4e9-1fe8-4523-8ebd-a315c3f814db
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"
