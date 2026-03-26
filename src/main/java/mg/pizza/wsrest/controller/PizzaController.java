@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,15 +58,19 @@ public class PizzaController {
     }
 
     @GetMapping
-    @Operation(summary = "List pizzas", description = "Return all pizzas", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "List pizzas", description = "Return pizzas filtered by name, categoryName and availability", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pizzas found",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = PizzaResponseDTO.class)))),
         @ApiResponse(responseCode = "401", description = "Missing or invalid JWT",
             content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class)))
     })
-    public ResponseEntity<List<PizzaResponseDTO>> getAllPizzas() {
-        return ResponseEntity.ok(pizzaService.getAllPizzas());
+    public ResponseEntity<List<PizzaResponseDTO>> getAllPizzas(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String categoryName,
+        @RequestParam(required = false) Boolean available
+    ) {
+        return ResponseEntity.ok(pizzaService.getFilteredPizzas(name, categoryName, available));
     }
 
     @GetMapping("/{id}")

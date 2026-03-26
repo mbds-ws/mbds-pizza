@@ -49,6 +49,13 @@ public class PizzaService {
                 .collect(Collectors.toList());
     }
 
+    public List<PizzaResponseDTO> getFilteredPizzas(String name, String categoryName, Boolean available) {
+        return pizzaRepository.findByFilters(name, categoryName, available)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public PizzaResponseDTO getPizzaById(Long id) {
         Pizza pizza = pizzaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pizza not found with id: " + id));
