@@ -18,3 +18,9 @@ values:
   - key: pizzaId
     value: ''
     enabled: true
+  - key: orderId
+    value: ''
+    enabled: true
+  - key: categoryId
+    value: ''
+    enabled: true

@@ -102,8 +102,7 @@ public class PizzaController {
     public ResponseEntity<PizzaResponseDTO> updatePizza(
         @Parameter(description = "Pizza id", required = true, example = "1")
             @PathVariable Long id,
-            @Valid @RequestBody PizzaRequestDTO requestDto
-    ) {
+            @Valid @RequestBody PizzaRequestDTO requestDto) {
         return ResponseEntity.ok(pizzaService.updatePizza(id, requestDto));
     }
 

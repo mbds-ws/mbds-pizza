@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{baseUrl}}/api/orders"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "items": [
+        {
+          "pizzaId": {{pizzaId}},
+          "quantity": 2
+        }
+      ]
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Order created', function () {
+        pm.response.to.have.status(201);
+      });
+
+      var response = pm.response.json();
+      pm.environment.set('orderId', response.id);
+    language: text/javascript
+order: 11000

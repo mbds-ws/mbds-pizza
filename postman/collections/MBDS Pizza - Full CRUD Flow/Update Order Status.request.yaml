@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/orders/{{orderId}}/status"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "status": "EN_PREPARATION"
+    }
+order: 14000

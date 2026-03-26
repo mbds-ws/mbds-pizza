@@ -9,24 +9,24 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import mg.pizza.wsrest.dto.LoginDTO;
 import mg.pizza.wsrest.dto.RegisterDTO;
 import mg.pizza.wsrest.dto.ValidationErrorResponseDTO;
 import mg.pizza.wsrest.service.AuthService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Public endpoints for login and customer registration")
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
         @Operation(summary = "Login", description = "Authenticate with phone and password to receive a JWT token")
