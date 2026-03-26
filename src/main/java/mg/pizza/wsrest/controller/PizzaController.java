@@ -58,7 +58,7 @@ public class PizzaController {
     }
 
     @GetMapping
-    @Operation(summary = "List pizzas", description = "Return pizzas filtered by name, categoryName and availability", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "List and filter pizzas", description = "Return pizzas filtered by name, categoryName and availability", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pizzas found",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = PizzaResponseDTO.class)))),

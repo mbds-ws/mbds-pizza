@@ -1,8 +1,10 @@
 package mg.pizza.wsrest.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,19 +13,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mg.pizza.wsrest.dto.ApiErrorResponseDTO;
 import mg.pizza.wsrest.dto.CreateOrderRequestDTO;
 import mg.pizza.wsrest.dto.OrderResponseDTO;
 import mg.pizza.wsrest.dto.UpdateOrderStatusRequestDTO;
+import mg.pizza.wsrest.model.OrderStatus;
 import mg.pizza.wsrest.service.OrderService;
 
 @RestController
@@ -47,6 +55,27 @@ public class OrderController {
     ) {
         OrderResponseDTO createdOrder = orderService.createOrder(requestDTO, principal.getName());
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Operation(
+        summary = "List and filter orders",
+        description = "Return orders filtered by status, exact date, or date range",
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Orders found",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrderResponseDTO.class)))),
+        @ApiResponse(responseCode = "401", description = "Missing or invalid JWT",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class)))
+    })
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrders(
+            @RequestParam(required = false) OrderStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return ResponseEntity.ok(orderService.getFilteredOrders(status, date, startDate, endDate));
     }
 
     @GetMapping("/{id}")

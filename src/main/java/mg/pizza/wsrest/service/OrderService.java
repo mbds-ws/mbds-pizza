@@ -1,6 +1,7 @@
 package mg.pizza.wsrest.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,6 +97,28 @@ public class OrderService {
 
         Order updatedOrder = orderRepository.save(order);
         return mapToResponseDTO(updatedOrder);
+    }
+
+    public List<OrderResponseDTO> getFilteredOrders(OrderStatus status, LocalDate date,LocalDate startDate, LocalDate endDate) {
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+
+        if (date != null) {
+            startDateTime = date.atStartOfDay();
+            endDateTime = date.plusDays(1).atStartOfDay();
+        } else {
+            if (startDate != null) {
+                startDateTime = startDate.atStartOfDay();
+            }
+            if (endDate != null) {
+                endDateTime = endDate.plusDays(1).atStartOfDay();
+            }
+        }
+
+        return orderRepository.findByFilters(status, startDateTime, endDateTime)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
     private OrderResponseDTO mapToResponseDTO(Order order) {
