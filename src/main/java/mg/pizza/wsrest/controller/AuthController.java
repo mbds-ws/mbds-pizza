@@ -2,22 +2,22 @@ package mg.pizza.wsrest.controller;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import mg.pizza.wsrest.dto.LoginDTO;
 import mg.pizza.wsrest.dto.RegisterDTO;
 import mg.pizza.wsrest.service.AuthService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginDTO dto) {

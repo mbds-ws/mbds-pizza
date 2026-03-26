@@ -47,8 +47,7 @@ public class PizzaController {
     @PutMapping("/{id}")
     public ResponseEntity<PizzaResponseDTO> updatePizza(
             @PathVariable Long id,
-            @Valid @RequestBody PizzaRequestDTO requestDto
-    ) {
+            @Valid @RequestBody PizzaRequestDTO requestDto) {
         return ResponseEntity.ok(pizzaService.updatePizza(id, requestDto));
     }
 
