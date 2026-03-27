@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/orders?date=2026-03-27"
+method: GET
+order: 3200
