@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pizzas"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Pizzas found', function () {
+        pm.response.to.have.status(200);
+      });
+
+      var response = pm.response.json();
+
+      pm.test('HATEOAS: collection _links present', function () {
+        pm.expect(response).to.have.property('_links');
+      });
+
+      pm.test('HATEOAS: collection self link present', function () {
+        pm.expect(response._links).to.have.property('self');
+        pm.expect(response._links.self).to.include('/api/pizzas');
+      });
+
+      pm.test('HATEOAS: pizzas array present', function () {
+        pm.expect(response).to.have.property('pizzas');
+        pm.expect(response.pizzas).to.be.an('array');
+      });
+
+      pm.test('HATEOAS: each pizza has self and category links', function () {
+        response.pizzas.forEach(function (pizza) {
+          pm.expect(pizza).to.have.property('_links');
+          pm.expect(pizza._links).to.have.property('self');
+          pm.expect(pizza._links.self).to.include('/api/pizzas/');
+          pm.expect(pizza._links).to.have.property('category');
+          pm.expect(pizza._links.category).to.include('/api/categories/');
+        });
+      });
+    language: text/javascript
+order: 2100
