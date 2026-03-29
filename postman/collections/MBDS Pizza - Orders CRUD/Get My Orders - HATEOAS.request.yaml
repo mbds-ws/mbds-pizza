@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{baseUrl}}/api/orders/my-orders"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('My orders found', function () {
+        pm.response.to.have.status(200);
+      });
+
+      var response = pm.response.json();
+
+      pm.test('HATEOAS: collection _links present', function () {
+        pm.expect(response).to.have.property('_links');
+      });
+
+      pm.test('HATEOAS: collection self link present', function () {
+        pm.expect(response._links).to.have.property('self');
+        pm.expect(response._links.self).to.include('/api/orders/my-orders');
+      });
+
+      pm.test('HATEOAS: orders array present', function () {
+        pm.expect(response).to.have.property('orders');
+        pm.expect(response.orders).to.be.an('array');
+      });
+
+      pm.test('HATEOAS: each order has self link', function () {
+        response.orders.forEach(function (order) {
+          pm.expect(order).to.have.property('_links');
+          pm.expect(order._links).to.have.property('self');
+          pm.expect(order._links.self).to.include('/api/orders/');
+        });
+      });
+    language: text/javascript
+order: 3100
