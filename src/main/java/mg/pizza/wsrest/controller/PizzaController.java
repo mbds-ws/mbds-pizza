@@ -77,8 +77,11 @@ public class PizzaController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class)))
     })
     public ResponseEntity<CollectionModel<EntityModel<PizzaResponseDTO>>> getAllPizzas(
+            @Parameter(description = "Filter by pizza name (partial match)", example = "Margherita")
             @RequestParam(required = false) String name,
+            @Parameter(description = "Filter by category name (partial match)", example = "Classic")
             @RequestParam(required = false) String categoryName,
+            @Parameter(description = "Filter by availability", example = "true")
             @RequestParam(required = false) Boolean available
     ) {
         List<EntityModel<PizzaResponseDTO>> pizzas = pizzaService.getFilteredPizzas(name, categoryName, available)
@@ -100,8 +103,8 @@ public class PizzaController {
 
     @GetMapping("/{id}")
     @Operation(
-        summary = "Get pizza by id with links",
-        description = "Return one pizza by id with HATEOAS links",
+        summary = "Get pizza by id",
+        description = "Return one pizza by its id",
         security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-@Schema(description = "Order response returned by the API")
+@Schema(name = "OrderResponse", description = "Order response returned by the API")
 public class OrderResponseDTO {
     @Schema(description = "Order identifier", example = "1")
     private Long id;

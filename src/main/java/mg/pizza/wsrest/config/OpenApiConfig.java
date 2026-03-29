@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
     info = @Info(
         title = "MBDS Pizza API",
         version = "v1",
-        description = "REST API for authentication and pizza catalog management (categories, ingredients, pizzas).",
+        description = "REST API for authentication, pizza catalog management (categories, ingredients, pizzas), orders and statistics.",
         contact = @Contact(name = "MBDS Team"),
         license = @License(name = "Internal Use")
     )

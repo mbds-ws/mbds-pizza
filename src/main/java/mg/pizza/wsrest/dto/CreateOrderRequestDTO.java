@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-@Schema(description = "Payload used to create an order")
+@Schema(name = "CreateOrderRequest", description = "Payload used to create an order")
 public class CreateOrderRequestDTO {
     
     @NotEmpty(message = "Order items are required")
