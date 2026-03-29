@@ -5,15 +5,7 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Postman Special",
-      "description": "Pizza created from Postman CRUD tests",
-      "price": 25000,
-      "available": true,
-      "categoryId": {{categoryId}},
-      "ingredientIds": [{{ingredientId}}]
-    }
+  content: ""
 scripts:
   - type: afterResponse
     code: |-

@@ -5,9 +5,5 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Runner Category Updated",
-      "description": "Category updated by the full Postman flow"
-    }
+  content: ""
 order: 4000

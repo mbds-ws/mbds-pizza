@@ -10,4 +10,4 @@ scripts:
 
       pm.environment.unset('pizzaId');
     language: text/javascript
-  order: 15000
+order: 11000

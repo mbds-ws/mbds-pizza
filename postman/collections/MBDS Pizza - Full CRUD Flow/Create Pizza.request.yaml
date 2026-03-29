@@ -5,15 +5,7 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Runner Pizza",
-      "description": "Pizza created by the full Postman flow",
-      "price": 30000,
-      "available": true,
-      "categoryId": {{categoryId}},
-      "ingredientIds": [{{ingredientId}}]
-    }
+  content: ""
 scripts:
   - type: afterResponse
     code: |-

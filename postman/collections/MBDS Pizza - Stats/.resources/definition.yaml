@@ -1,0 +1,9 @@
+$kind: collection
+description: Statistics endpoints for revenue and top-selling pizzas. Run the
+  auth collection first so {{token}} is available.
+auth:
+  - id: a1b2c3d4-e5f6-7890-abcd-stats0000001
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"

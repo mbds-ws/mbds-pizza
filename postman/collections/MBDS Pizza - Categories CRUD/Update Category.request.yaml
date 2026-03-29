@@ -5,9 +5,5 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Signature Category Updated",
-      "description": "Updated from Postman CRUD tests"
-    }
+  content: ""
 order: 4000

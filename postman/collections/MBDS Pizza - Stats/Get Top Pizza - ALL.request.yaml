@@ -1,4 +1,4 @@
 $kind: http-request
-url: "{{baseUrl}}/api/stats/top-pizza?period=ALL"
+url: "{{baseUrl}}/api/stats/top-pizzas?period=ALL"
 method: GET
 order: 4400

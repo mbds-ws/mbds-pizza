@@ -1,16 +1,11 @@
 $kind: http-request
-description: Authenticates with the seeded admin user and stores the JWT in the environment.
 url: "{{baseUrl}}/api/auth/login"
 method: POST
 headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "phone": "{{adminPhone}}",
-      "password": "{{adminPassword}}"
-    }
+  content: ""
 scripts:
   - type: afterResponse
     code: |-

@@ -5,11 +5,7 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Runner Category",
-      "description": "Category created by the full Postman flow"
-    }
+  content: ""
 scripts:
   - type: afterResponse
     code: |-

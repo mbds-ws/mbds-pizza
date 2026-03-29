@@ -5,13 +5,5 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Postman Special Updated",
-      "description": "Updated from Postman CRUD tests",
-      "price": 27000,
-      "available": true,
-      "categoryId": {{categoryId}},
-      "ingredientIds": [{{ingredientId}}]
-    }
+  content: ""
 order: 4000

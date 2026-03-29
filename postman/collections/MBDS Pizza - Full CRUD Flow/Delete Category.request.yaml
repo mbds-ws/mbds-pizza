@@ -9,7 +9,6 @@ scripts:
       });
 
       pm.environment.unset('categoryId');
-        pm.environment.unset('orderId');
       pm.environment.unset('token');
     language: text/javascript
-      order: 17000
+order: 13000

@@ -1,26 +1,21 @@
 name: MBDS Pizza Local
 values:
   - key: baseUrl
-    value: 'http://localhost:8080'
+    value: http://localhost:8080
     enabled: true
   - key: adminPhone
-    value: '+261000000000'
+    value: "+261000000000"
     enabled: true
   - key: adminPassword
-    value: '1234'
+    value: "1234"
     enabled: true
   - key: token
-    value: ''
+    value: ""
     enabled: true
   - key: ingredientId
-    value: ''
+    value: ""
     enabled: true
   - key: pizzaId
-    value: ''
+    value: ""
     enabled: true
-  - key: orderId
-    value: ''
-    enabled: true
-  - key: categoryId
-    value: ''
-    enabled: true
+color: null

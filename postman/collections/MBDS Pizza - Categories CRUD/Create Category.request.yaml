@@ -5,11 +5,7 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: |-
-    {
-      "name": "Signature Category",
-      "description": "Category created from Postman CRUD tests"
-    }
+  content: ""
 scripts:
   - type: afterResponse
     code: |-
