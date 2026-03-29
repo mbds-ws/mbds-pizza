@@ -3,6 +3,7 @@ package mg.pizza.wsrest.repository;
 import mg.pizza.wsrest.model.Order;
 import mg.pizza.wsrest.model.OrderStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,4 +28,18 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime
     );
+
+     @Query("""
+        SELECT COALESCE(SUM(o.totalAmount), 0)
+        FROM Order o
+        WHERE o.status <> :excludedStatus
+          AND (:startDateTime IS NULL OR o.orderDate >= :startDateTime)
+          AND (:endDateTime IS NULL OR o.orderDate < :endDateTime)
+    """)
+    BigDecimal calculateRevenue(
+            @Param("excludedStatus") OrderStatus excludedStatus,
+            @Param("startDateTime") LocalDateTime startDateTime,
+            @Param("endDateTime") LocalDateTime endDateTime
+    );
 }
+
