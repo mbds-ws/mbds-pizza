@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import mg.pizza.wsrest.dto.RevenueStatsDTO;
+import mg.pizza.wsrest.dto.TopPizzaStatsDTO;
 import mg.pizza.wsrest.exception.InvalidStatsPeriodException;
 import mg.pizza.wsrest.model.OrderStatus;
 import mg.pizza.wsrest.model.StatsPeriod;
@@ -75,5 +77,16 @@ public class StatsService {
                 };
             }
         };
+    }
+
+    public List<TopPizzaStatsDTO> getTopPizzasStats(String period) {
+        StatsPeriod statsPeriod = parsePeriod(period);
+        LocalDateTime[] range = resolvePeriodRange(statsPeriod);
+
+        return orderItemRepository.findTopPizzas(
+                OrderStatus.ANNULEE,
+                range[0],
+                range[1]
+        );
     }
 }
