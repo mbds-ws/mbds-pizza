@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/stats/revenue?period=TODAY"
+method: GET
+order: 4100
