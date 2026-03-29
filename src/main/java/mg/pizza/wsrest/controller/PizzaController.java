@@ -33,6 +33,13 @@ import mg.pizza.wsrest.dto.PizzaResponseDTO;
 import mg.pizza.wsrest.dto.ValidationErrorResponseDTO;
 import mg.pizza.wsrest.service.PizzaService;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+
 @RestController
 @RequestMapping("/api/pizzas")
 @RequiredArgsConstructor
@@ -58,23 +65,45 @@ public class PizzaController {
     }
 
     @GetMapping
-    @Operation(summary = "List and filter pizzas", description = "Return pizzas filtered by name, categoryName and availability", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(
+        summary = "List and filter pizzas",
+        description = "Return pizzas filtered by name, category name and availability",
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pizzas found",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = PizzaResponseDTO.class)))),
         @ApiResponse(responseCode = "401", description = "Missing or invalid JWT",
             content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class)))
     })
-    public ResponseEntity<List<PizzaResponseDTO>> getAllPizzas(
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) String categoryName,
-        @RequestParam(required = false) Boolean available
+    public ResponseEntity<CollectionModel<EntityModel<PizzaResponseDTO>>> getAllPizzas(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) Boolean available
     ) {
-        return ResponseEntity.ok(pizzaService.getFilteredPizzas(name, categoryName, available));
+        List<EntityModel<PizzaResponseDTO>> pizzas = pizzaService.getFilteredPizzas(name, categoryName, available)
+                .stream()
+                .map(pizza -> EntityModel.of(
+                        pizza,
+                        linkTo(methodOn(PizzaController.class).getPizzaById(pizza.getId())).withSelfRel(),
+                        linkTo(methodOn(CategoryController.class).getCategoryById(pizza.getCategoryId())).withRel("category")
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<PizzaResponseDTO>> collectionModel = CollectionModel.of(
+                pizzas,
+                linkTo(methodOn(PizzaController.class).getAllPizzas(name, categoryName, available)).withSelfRel()
+        );
+
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get pizza by id", description = "Return one pizza by id", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(
+        summary = "Get pizza by id with links",
+        description = "Return one pizza by id with HATEOAS links",
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pizza found",
             content = @Content(schema = @Schema(implementation = PizzaResponseDTO.class))),
@@ -83,10 +112,20 @@ public class PizzaController {
         @ApiResponse(responseCode = "404", description = "Pizza not found",
             content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class)))
     })
-    public ResponseEntity<PizzaResponseDTO> getPizzaById(
-        @Parameter(description = "Pizza id", required = true, example = "1")
-        @PathVariable Long id) {
-        return ResponseEntity.ok(pizzaService.getPizzaById(id));
+    public ResponseEntity<EntityModel<PizzaResponseDTO>> getPizzaById(
+            @Parameter(description = "Pizza id", required = true, example = "1")
+            @PathVariable Long id) {
+
+        PizzaResponseDTO pizza = pizzaService.getPizzaById(id);
+
+        EntityModel<PizzaResponseDTO> pizzaModel = EntityModel.of(
+                pizza,
+                linkTo(methodOn(PizzaController.class).getPizzaById(id)).withSelfRel(),
+                linkTo(methodOn(PizzaController.class).getAllPizzas(null, null, null)).withRel("all-pizzas"),
+                linkTo(methodOn(CategoryController.class).getCategoryById(pizza.getCategoryId())).withRel("category")
+        );
+
+        return ResponseEntity.ok(pizzaModel);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
