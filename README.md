@@ -166,31 +166,21 @@ Lancer l’application :
 mvn spring-boot:run
 
 8. Base de données
-
 Le projet utilise H2 Database comme base de données embarquée.
-
 Les tables sont générées automatiquement via JPA / Hibernate.
-
 Si la console H2 est activée, elle peut être accessible via une URL du type : http://localhost:8080/h2-console
 
 9. Documentation Swagger
-
-La documentation Swagger est accessible à l’adresse :
-
-http://localhost:8080/swagger-ui/index.html
-
+La documentation Swagger est accessible à l’adresse : http://localhost:8080/swagger-ui/index.html
 Swagger permet :
-
 de visualiser les endpoints disponibles
 de lire leur description
 de tester directement l’API
 d’utiliser le JWT pour les endpoints protégés
+
 10. Tests Postman
-
 Une collection Postman est fournie pour tester l’API.
-
 Elle contient les modules suivants :
-
 Auth
 Categories
 Ingredients
