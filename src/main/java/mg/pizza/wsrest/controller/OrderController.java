@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -79,26 +85,48 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-        @Operation(summary = "Get order by id", description = "Returns the details of a specific order")
-        @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order retrieved"),
-            @ApiResponse(responseCode = "401", description = "Authentication required"),
-            @ApiResponse(responseCode = "404", description = "Order not found")
-        })
-        public ResponseEntity<OrderResponseDTO> getOrderById(
+    @Operation(summary = "Get order by id with links", description = "Returns the details of a specific order with HATEOAS links")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Order retrieved"),
+        @ApiResponse(responseCode = "401", description = "Authentication required"),
+        @ApiResponse(responseCode = "404", description = "Order not found")
+    })
+    public ResponseEntity<EntityModel<OrderResponseDTO>> getOrderById(
             @Parameter(description = "Order identifier", example = "1") @PathVariable Long id
-        ) {
-        return ResponseEntity.ok(orderService.getOrderById(id));
+    ) {
+        OrderResponseDTO order = orderService.getOrderById(id);
+
+        EntityModel<OrderResponseDTO> orderModel = EntityModel.of(
+                order,
+                linkTo(methodOn(OrderController.class).getOrderById(id)).withSelfRel(),
+                linkTo(methodOn(OrderController.class).getMyOrders(null)).withRel("my-orders"),
+                linkTo(methodOn(OrderController.class).getAllOrders(null, null, null, null)).withRel("all-orders")
+        );
+
+        return ResponseEntity.ok(orderModel);
     }
 
     @GetMapping("/my-orders")
-        @Operation(summary = "Get my orders", description = "Returns all orders for the authenticated user")
-        @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Orders retrieved"),
-            @ApiResponse(responseCode = "401", description = "Authentication required")
-        })
-    public ResponseEntity<List<OrderResponseDTO>> getMyOrders(Principal principal) {
-        return ResponseEntity.ok(orderService.getMyOrders(principal.getName()));
+    @Operation(summary = "Get my orders with links", description = "Returns all orders for the authenticated user with HATEOAS links")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Orders retrieved"),
+        @ApiResponse(responseCode = "401", description = "Authentication required")
+    })
+    public ResponseEntity<CollectionModel<EntityModel<OrderResponseDTO>>> getMyOrders(Principal principal) {
+        List<EntityModel<OrderResponseDTO>> orders = orderService.getMyOrders(principal.getName())
+                .stream()
+                .map(order -> EntityModel.of(
+                        order,
+                        linkTo(methodOn(OrderController.class).getOrderById(order.getId())).withSelfRel()
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<OrderResponseDTO>> collectionModel = CollectionModel.of(
+                orders,
+                linkTo(methodOn(OrderController.class).getMyOrders(principal)).withSelfRel()
+        );
+
+        return ResponseEntity.ok(collectionModel);
     }
 
     @PatchMapping("/{id}/status")
