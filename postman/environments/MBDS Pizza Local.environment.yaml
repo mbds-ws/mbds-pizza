@@ -12,3 +12,6 @@ values:
   - key: orderId
     value: ''
     enabled: true
+  - key: token
+    value: ''
+    enabled: true
