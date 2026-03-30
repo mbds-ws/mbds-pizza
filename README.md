@@ -157,51 +157,54 @@ Retourne les pizzas les plus vendues sur la période demandée.
 1. Cloner le dépôt :
 ```bash
 git clone https://github.com/mbds-ws/mbds-pizza.git
-
-
-Ouvrir le projet dans l’IDE
-Installer les dépendances :
+```
+2. Ouvrir le projet dans l’IDE
+3. Installer les dépendances :
+```bash
 mvn clean install
-Lancer l’application :
+```
+4. Lancer l’application :
+```bash
 mvn spring-boot:run
+```
 
-8. Base de données
-Le projet utilise H2 Database comme base de données embarquée.
+## 8. Base de données
+Le projet utilise **H2 Database** comme base de données embarquée.
 Les tables sont générées automatiquement via JPA / Hibernate.
-Si la console H2 est activée, elle peut être accessible via une URL du type : http://localhost:8080/h2-console
+Si la console H2 est activée, elle peut être accessible via une URL du type : `http://localhost:8080/h2-console`
 
-9. Documentation Swagger
-La documentation Swagger est accessible à l’adresse : http://localhost:8080/swagger-ui/index.html
+## 9. Documentation Swagger
+La documentation Swagger est accessible à l’adresse : `http://localhost:8080/swagger-ui/index.html`
 Swagger permet :
-de visualiser les endpoints disponibles
-de lire leur description
-de tester directement l’API
-d’utiliser le JWT pour les endpoints protégés
+- de visualiser les endpoints disponibles
+- de lire leur description
+- de tester directement l’API
+- d’utiliser le JWT pour les endpoints protégés
 
-10. Tests Postman
+## 10. Tests Postman
 Une collection Postman est fournie pour tester l’API.
 Elle contient les modules suivants :
-Auth
-Categories
-Ingredients
-Pizzas
-Orders
-Filters
-Stats
-HATEOAS
+- Auth
+- Categories
+- Ingredients
+- Pizzas
+- Orders
+- Filters
+- Stats
+- HATEOAS
 
 L’ordre conseillé des tests est :
+1. Authentification
+2. Catégories
+3. Ingrédients
+4. Pizzas
+5. Commandes
+6. Filtres
+7. Statistiques
+8. HATEOAS
 
-Authentification
-Catégories
-Ingrédients
-Pizzas
-Commandes
-Filtres
-Statistiques
-HATEOAS
-
-11. Comptes de test
-Administrateur
-"phone": "+261000000000",
-"password": "1234"
+## 11. Comptes de test
+- **Admin** : compte par défaut
+phone: `+261000000000`,
+password: `1234`
+- **Client** : à créer via inscription
