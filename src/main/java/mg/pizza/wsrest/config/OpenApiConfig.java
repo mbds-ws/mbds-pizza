@@ -19,8 +19,7 @@ import org.springframework.context.annotation.Configuration;
         license = @License(name = "Internal Use")
     ),
     servers = {
-        @Server(url = "https://pizza.famenontsoa.site", description = "Production"),
-        @Server(url = "http://localhost:8080", description = "Local")
+        @Server(url = "https://pizza.famenontsoa.site", description = "Production")
     }
 )
 @SecurityScheme(
