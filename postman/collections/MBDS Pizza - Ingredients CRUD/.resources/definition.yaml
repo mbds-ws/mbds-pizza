@@ -2,7 +2,7 @@ $kind: collection
 description: CRUD requests for ingredients. Run the auth collection first so
   {{token}} is available.
 auth:
-  - id: d982be30-de5e-4964-ae53-480432a6f86e
+  - id: a61eee92-8db3-4d11-b9a5-0e0deb1ba9ed
     type: bearer
     name: bearer auth
     credentials:

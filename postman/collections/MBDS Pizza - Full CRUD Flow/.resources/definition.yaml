@@ -2,7 +2,7 @@ $kind: collection
 description: "End-to-end flow: login, categories CRUD, ingredients CRUD, pizzas
   CRUD, then cleanup. Safe to run from the Postman Collection Runner."
 auth:
-  - id: 6abf9a73-9a5f-4e9d-9f8d-4b0cca4730b1
+  - id: 53d3bbe3-b6d2-4268-8ba1-8688537046d3
     type: bearer
     name: bearer auth
     credentials:

@@ -2,7 +2,7 @@ $kind: collection
 description: CRUD requests for categories. Run the auth collection first so
   {{token}} is available.
 auth:
-  - id: 4d8a77e8-1e21-46ca-b093-9b37662b7043
+  - id: d4056fba-07f4-4618-bd5d-eb0dd8ef6f4e
     type: bearer
     name: bearer auth
     credentials:
