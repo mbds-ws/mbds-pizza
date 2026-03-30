@@ -5,7 +5,11 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: ""
+  content: |-
+    {
+      "name": "Classiques",
+      "description": "Pizzas classiques italiennes"
+    }
 scripts:
   - type: afterResponse
     code: |-

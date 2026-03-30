@@ -5,7 +5,15 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: ""
+  content: |-
+    {
+      "name": "Margherita",
+      "description": "Pizza classique avec tomate et mozzarella",
+      "price": 25000,
+      "available": true,
+      "categoryId": {{categoryId}},
+      "ingredientIds": [{{ingredientId}}]
+    }
 scripts:
   - type: afterResponse
     code: |-

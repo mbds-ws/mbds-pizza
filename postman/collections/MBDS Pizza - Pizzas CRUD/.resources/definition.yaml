@@ -2,7 +2,7 @@ $kind: collection
 description: CRUD requests for pizzas. Requires {{token}}, {{categoryId}} and
   {{ingredientId}} to be set in the environment.
 auth:
-  - id: 2ac7d816-9e5f-4895-b4bd-77ce229b9085
+  - id: c606d69f-2f7e-4fed-a266-ce2b2888e007
     type: bearer
     name: bearer auth
     credentials:

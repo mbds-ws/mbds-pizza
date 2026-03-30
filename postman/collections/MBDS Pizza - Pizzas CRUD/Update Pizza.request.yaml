@@ -5,5 +5,13 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: ""
+  content: |-
+    {
+      "name": "Margherita Updated",
+      "description": "Pizza classique mise à jour",
+      "price": 28000,
+      "available": true,
+      "categoryId": {{categoryId}},
+      "ingredientIds": [{{ingredientId}}]
+    }
 order: 4000

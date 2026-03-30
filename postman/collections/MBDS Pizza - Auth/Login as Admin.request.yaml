@@ -5,7 +5,11 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: ""
+  content: |-
+    {
+      "phone": "+261000000000",
+      "password": "1234"
+    }
 scripts:
   - type: afterResponse
     code: |-

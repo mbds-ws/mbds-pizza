@@ -5,5 +5,8 @@ headers:
   Content-Type: application/json
 body:
   type: text
-  content: ""
+  content: |-
+    {
+      "name": "Mozzarella Updated"
+    }
 order: 7000
