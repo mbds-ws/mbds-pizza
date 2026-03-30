@@ -31,3 +31,16 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            docker pull ghcr.io/mbds-ws/mbds-pizza:latest
+            docker stop pizza-api || true
+            docker rm pizza-api || true
+            docker run -d -p 8080:8080 --restart unless-stopped --name pizza-api ghcr.io/mbds-ws/mbds-pizza:latest
+            docker image prune -f
