@@ -9,15 +9,6 @@ values:
   - key: adminPassword
     value: '1234'
     enabled: true
-  - key: token
-    value: ''
-    enabled: true
-  - key: ingredientId
-    value: ''
-    enabled: true
-  - key: pizzaId
-    value: ''
-    enabled: true
-  - key: categoryId
+  - key: orderId
     value: ''
     enabled: true

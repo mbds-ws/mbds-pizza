@@ -14,4 +14,4 @@ body:
       "categoryId": {{categoryId}},
       "ingredientIds": [{{ingredientId}}]
     }
-order: 10000
+order: 11000

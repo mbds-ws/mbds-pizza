@@ -11,4 +11,4 @@ scripts:
       pm.environment.unset('categoryId');
       pm.environment.unset('token');
     language: text/javascript
-order: 13000
+order: 16000

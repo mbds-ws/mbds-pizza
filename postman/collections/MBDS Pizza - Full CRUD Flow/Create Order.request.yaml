@@ -24,4 +24,4 @@ scripts:
       var response = pm.response.json();
       pm.environment.set('orderId', response.id);
     language: text/javascript
-order: 11000
+order: 12000
