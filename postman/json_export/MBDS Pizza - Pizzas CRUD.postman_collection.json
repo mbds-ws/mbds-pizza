@@ -1,0 +1,374 @@
+{
+  "info": {
+    "name": "MBDS Pizza - Pizzas CRUD",
+    "description": "CRUD requests for pizzas. Requires {{token}}, {{categoryId}} and {{ingredientId}} to be set in the environment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Pizza",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Margherita\",\n  \"description\": \"Pizza classique avec tomate et mozzarella\",\n  \"price\": 25000,\n  \"available\": true,\n  \"categoryId\": {{categoryId}},\n  \"ingredientIds\": [{{ingredientId}}]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Pizza created', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "pm.environment.set('pizzaId', response.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get All Pizzas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Pizzas by Name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas?name=Runner",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "Runner"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get All Pizzas - HATEOAS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Pizzas found', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "",
+              "pm.test('HATEOAS: collection _links present', function () {",
+              "  pm.expect(response).to.have.property('_links');",
+              "});",
+              "",
+              "pm.test('HATEOAS: collection self link present', function () {",
+              "  pm.expect(response._links).to.have.property('self');",
+              "  pm.expect(response._links.self).to.include('/api/pizzas');",
+              "});",
+              "",
+              "pm.test('HATEOAS: pizzas array present', function () {",
+              "  pm.expect(response).to.have.property('pizzas');",
+              "  pm.expect(response.pizzas).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('HATEOAS: each pizza has self and category links', function () {",
+              "  response.pizzas.forEach(function (pizza) {",
+              "    pm.expect(pizza).to.have.property('_links');",
+              "    pm.expect(pizza._links).to.have.property('self');",
+              "    pm.expect(pizza._links.self).to.include('/api/pizzas/');",
+              "    pm.expect(pizza._links).to.have.property('category');",
+              "    pm.expect(pizza._links.category).to.include('/api/categories/');",
+              "  });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filter Pizzas by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas?categoryName=Classic",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ],
+          "query": [
+            {
+              "key": "categoryName",
+              "value": "Classic"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Pizzas by Availability",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas?available=true",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ],
+          "query": [
+            {
+              "key": "available",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Pizzas Combined",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas?name=Runner&categoryName=Classic&available=true",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "Runner"
+            },
+            {
+              "key": "categoryName",
+              "value": "Classic"
+            },
+            {
+              "key": "available",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Pizza By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas/{{pizzaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas",
+            "{{pizzaId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Pizza By Id - HATEOAS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas/{{pizzaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas",
+            "{{pizzaId}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Pizza found', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "",
+              "pm.test('HATEOAS: _links present', function () {",
+              "  pm.expect(response).to.have.property('_links');",
+              "});",
+              "",
+              "pm.test('HATEOAS: self link present', function () {",
+              "  pm.expect(response._links).to.have.property('self');",
+              "  pm.expect(response._links.self).to.include('/api/pizzas/');",
+              "});",
+              "",
+              "pm.test('HATEOAS: all-pizzas link present', function () {",
+              "  pm.expect(response._links).to.have.property('all-pizzas');",
+              "  pm.expect(response._links['all-pizzas']).to.include('/api/pizzas');",
+              "});",
+              "",
+              "pm.test('HATEOAS: category link present', function () {",
+              "  pm.expect(response._links).to.have.property('category');",
+              "  pm.expect(response._links.category).to.include('/api/categories/');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Pizza",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas/{{pizzaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas",
+            "{{pizzaId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Margherita Updated\",\n  \"description\": \"Pizza classique mise à jour\",\n  \"price\": 28000,\n  \"available\": true,\n  \"categoryId\": {{categoryId}},\n  \"ingredientIds\": [{{ingredientId}}]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete Pizza",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pizzas/{{pizzaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "pizzas",
+            "{{pizzaId}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Pizza deleted', function () {",
+              "  pm.response.to.have.status(204);",
+              "});",
+              "",
+              "pm.environment.unset('pizzaId');"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
+}

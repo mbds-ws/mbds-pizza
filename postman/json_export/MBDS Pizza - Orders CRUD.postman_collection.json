@@ -1,0 +1,373 @@
+{
+  "info": {
+    "name": "MBDS Pizza - Orders CRUD",
+    "description": "CRUD-like requests for orders. Run the auth collection first so {{token}} is available, and ensure {{pizzaId}} points to an available pizza.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"items\": [\n    {\n      \"pizzaId\": {{pizzaId}},\n      \"quantity\": 2\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Order created', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "pm.environment.set('orderId', response.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Order By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/{{orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "{{orderId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Order By Id - HATEOAS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/{{orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "{{orderId}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Order found', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "",
+              "pm.test('HATEOAS: _links present', function () {",
+              "  pm.expect(response).to.have.property('_links');",
+              "});",
+              "",
+              "pm.test('HATEOAS: self link present', function () {",
+              "  pm.expect(response._links).to.have.property('self');",
+              "  pm.expect(response._links.self).to.include('/api/orders/');",
+              "});",
+              "",
+              "pm.test('HATEOAS: all-orders link present', function () {",
+              "  pm.expect(response._links).to.have.property('all-orders');",
+              "  pm.expect(response._links['all-orders']).to.include('/api/orders');",
+              "});",
+              "",
+              "pm.test('HATEOAS: my-orders link present', function () {",
+              "  pm.expect(response._links).to.have.property('my-orders');",
+              "  pm.expect(response._links['my-orders']).to.include('/api/orders/my-orders');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get My Orders",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/my-orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "my-orders"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Orders by Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders?status=EN_ATTENTE",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "EN_ATTENTE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get My Orders - HATEOAS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/my-orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "my-orders"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('My orders found', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var response = pm.response.json();",
+              "",
+              "pm.test('HATEOAS: collection _links present', function () {",
+              "  pm.expect(response).to.have.property('_links');",
+              "});",
+              "",
+              "pm.test('HATEOAS: collection self link present', function () {",
+              "  pm.expect(response._links).to.have.property('self');",
+              "  pm.expect(response._links.self).to.include('/api/orders/my-orders');",
+              "});",
+              "",
+              "pm.test('HATEOAS: orders array present', function () {",
+              "  pm.expect(response).to.have.property('orders');",
+              "  pm.expect(response.orders).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('HATEOAS: each order has self link', function () {",
+              "  response.orders.forEach(function (order) {",
+              "    pm.expect(order).to.have.property('_links');",
+              "    pm.expect(order._links).to.have.property('self');",
+              "    pm.expect(order._links.self).to.include('/api/orders/');",
+              "  });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filter Orders by Date",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders?date=2026-03-27",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "date",
+              "value": "2026-03-27"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Orders by Date Interval",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders?startDate=2026-03-01&endDate=2026-03-31",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2026-03-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2026-03-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Orders by Status and Date",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders?status=EN_ATTENTE&date=2026-03-27",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "EN_ATTENTE"
+            },
+            {
+              "key": "date",
+              "value": "2026-03-27"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Orders by Status and Date Interval",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders?status=EN_ATTENTE&startDate=2026-03-01&endDate=2026-03-31",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "EN_ATTENTE"
+            },
+            {
+              "key": "startDate",
+              "value": "2026-03-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2026-03-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Order Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/{{orderId}}/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "{{orderId}}",
+            "status"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"EN_PREPARATION\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
+}

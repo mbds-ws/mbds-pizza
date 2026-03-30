@@ -1,0 +1,211 @@
+{
+  "info": {
+    "name": "MBDS Pizza - Stats",
+    "description": "Statistics endpoints for revenue and top-selling pizzas. Run the auth collection first so {{token}} is available.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Revenue - ALL",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/revenue?period=ALL",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "revenue"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "ALL"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Revenue - TODAY",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/revenue?period=TODAY",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "revenue"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "TODAY"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Revenue - WEEK",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/revenue?period=WEEK",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "revenue"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "WEEK"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Revenue - MONTH",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/revenue?period=MONTH",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "revenue"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "MONTH"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Top Pizza - ALL",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/top-pizzas?period=ALL",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "top-pizzas"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "ALL"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Top Pizza - TODAY",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/top-pizzas?period=TODAY",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "top-pizzas"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "TODAY"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Top Pizza - WEEK",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/top-pizzas?period=WEEK",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "top-pizzas"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "WEEK"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Top Pizza - MONTH",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats/top-pizzas?period=MONTH",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "top-pizzas"
+          ],
+          "query": [
+            {
+              "key": "period",
+              "value": "MONTH"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
+}
